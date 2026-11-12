@@ -18,7 +18,10 @@ export async function getGrants(): Promise<ActionResult<Grant[]>> {
       .is("deleted_at", null)
       .order("created_at", { ascending: false });
 
-    if (error) return fail("Couldn't load grants");
+    if (error) {
+      console.error("getGrants failed for", user.id, error);
+      return fail("Couldn't load grants");
+    }
     return ok(data as Grant[]);
   });
 }

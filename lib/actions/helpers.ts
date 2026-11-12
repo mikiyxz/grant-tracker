@@ -24,7 +24,23 @@ export async function withUser<T>(
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) return fail("You need to be logged in");
-    return await run(supabase, data.user);
+    const user = data.user;
+
+    // the signup trigger normally makes the profile. if it didn't fire for
+    // some reason, make it here so grants don't fail on the user_id foreign key
+    const { error: profileError } = await supabase.from("profiles").upsert(
+      {
+        id: user.id,
+        full_name: user.user_metadata?.full_name || user.email || "New user",
+      },
+      { onConflict: "id", ignoreDuplicates: true }
+    );
+    if (profileError) {
+      console.error("profile check failed for", user.id, profileError);
+      return fail("Something went wrong");
+    }
+
+    return await run(supabase, user);
   } catch {
     return fail("Something went wrong");
   }
