@@ -1,34 +1,23 @@
 # Grant Tracker
 
-Deadline and grant management tool for small Canadian nonprofits.
-
-## Stack
-
-Next.js 15, TypeScript, Supabase, Tailwind CSS
+Deadline and grant tracking app for small Canadian nonprofits. Built with Next.js 15, TypeScript, Supabase, and Tailwind.
 
 ## Running locally
 
-```
-git clone https://github.com/mikiyxz/grant-tracker.git
-cd grant-tracker
-npm install
-```
-
-Create `.env.local` in the project root:
+Clone the repo and create a `.env.local` in the root with:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
-Both values are in your Supabase project under Settings > API.
+Then run the SQL files in `supabase/migrations/` in order in the Supabase SQL editor.
+
+Install and start it:
 
 ```
+npm install
 npm run dev
 ```
 
-The app runs on http://localhost:3000.
-
-## Database
-
-The schema lives in `supabase/migrations/`. Run the files in order against your Supabase project, either through the SQL editor or the Supabase CLI.
+Opens on localhost:3000.
